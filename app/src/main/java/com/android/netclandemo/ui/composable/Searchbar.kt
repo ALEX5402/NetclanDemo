@@ -1,118 +1,142 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.android.netclandemo.ui.composable
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.sharp.KeyboardArrowUp
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.asFlow
+import com.android.netclandemo.ui.navigation.screens.explorescreen.ExploreViewmodel
+import kotlinx.coroutines.launch
 
 typealias SearchQueryListener = (searchQuery: String) -> Unit
 
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Searchbar(
+fun MainScreenSearchBar(
     suggestions: List<String>,
-    modifier: Modifier = Modifier,
-    value : String,
-    searchText : String  = "Search",
-    onValueChange: (String) -> Unit,
     onSearchClicked : SearchQueryListener,
-    singleLine : Boolean = true,
-    enabled : Boolean = true,
-    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-    minLines: Int = 1,
-    textStyle : TextStyle = TextStyle(color = if (isSystemInDarkTheme()) Color.Black else Color.White),
-    content : @Composable () -> Unit
+    modifier: Modifier,
+    viewmodel: ExploreViewmodel = hiltViewModel(),
 )  {
     var hideKeyboard by remember { mutableStateOf(false) }
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
-    SideEffect {
-        if (textFieldValue.selection != textFieldValueState.selection ||
-            textFieldValue.composition != textFieldValueState.composition) {
-            textFieldValueState = textFieldValue
-        }
-    }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    val keyboardState by rememberKeyboardVisibilityState()
+
+    val scope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    var text by remember { mutableStateOf("") }
     var showSuggestions by remember {
         mutableStateOf(false)
     }
-    BasicTextField(
-        value = textFieldValue,
-            onValueChange = { newTextFieldValueState ->
-                textFieldValueState = newTextFieldValueState
-                val stringChangedSinceLastInvocation = lastTextValue != newTextFieldValueState.text
-                lastTextValue = newTextFieldValueState.text
+    val currentValue by viewmodel.serchvalue.asFlow<String>().collectAsState(initial = "")
+    var isActive by remember {
+        mutableStateOf(false)
+    }
+            SearchBar(query = currentValue ,
+                onQueryChange = { updatedText->
+                    scope.launch {
+                        viewmodel.updatesearch(updatedText)
+                    }
+                } ,
+                onSearch = { searchQuery-> onSearchClicked(searchQuery)
+                    focusManager.clearFocus()
+                } ,
+                active = isActive ,
+                onActiveChange = { onchangeBoolean->
+                   showSuggestions = onchangeBoolean
+                },
 
-                if (stringChangedSinceLastInvocation) {
-                    onValueChange(newTextFieldValueState.text)
+                leadingIcon = {
+                    Icon(Icons.Default.Search,
+                        contentDescription = null)
+                },
+                shape = RoundedCornerShape(40.dp),
+                placeholder = {
+                    Text(text = "Search")
+                } ,
+                shadowElevation = SearchBarDefaults.InputFieldHeight ,
+
+                modifier = modifier
+                    .focusRequester(focusRequester)
+                    .onFocusEvent { focusEvent ->
+                        isFocused = focusEvent.isFocused
+
+                    }
+
+            ){}
+
+        val suggetion = suggestions.filter {
+            it.contains(currentValue, ignoreCase = true)
+        }
+            if (isFocused && showSuggestions){
+                DropdownMenu(
+                    expanded = true,
+                    onDismissRequest = {
+                        showSuggestions = false
+                    },
+                    Modifier.fillMaxWidth()
+                ) {
+                  suggetion.take(4).forEachIndexed { index, items ->
+                          DropdownMenuItem(text = {
+                              Text(text = items)
+                          }, onClick = {
+                              scope.launch {
+                                  viewmodel.updatesearch(items)
+                              }
+                              showSuggestions = false
+                            //  focusManager.clearFocus()
+                          }, trailingIcon = {
+                              Icon(Icons.Sharp.KeyboardArrowUp,
+                                  contentDescription = null )
+                          })
+                  }
+
                 }
-            },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search ,
-                keyboardType = KeyboardType.Text),
-            keyboardActions = KeyboardActions(onSearch = {
-                focusManager.clearFocus()  // isse wo composable reset ho rha thaa
-                focusRequester.restoreFocusedChild()
-                showSuggestions = false
-                onSearchClicked(textFieldValue.text)
-            }),
-             modifier = modifier
-                 .clickable {
-                   //  showSuggestions = false
-                     focusRequester.restoreFocusedChild()
-                 }
-                 .onFocusChanged {
-                     isFocused = it.isFocused
-
-                //   focusRequester.requestFocus()
-                     showSuggestions = true
-                 }
-                 .focusRequester(focusRequester),
-            singleLine = singleLine,
-            enabled = enabled,
-            maxLines = maxLines,
-            minLines = minLines,
-            textStyle = textStyle,
-    )
-    {
-        Row {
-            if (text.isEmpty() && !isFocused) {
-                Text(
-                    text = searchText,
-                    style = TextStyle(color = Color.Gray),
-                    modifier = Modifier.alpha(0.5f)
-                )
             }
-            content()
+
+    LaunchedEffect(key1 = currentValue ) {
+        showSuggestions = true
+
+    }
+
+    LaunchedEffect( key1 = isFocused) {
+        if (!isFocused){
+            showSuggestions = false
+            focusManager.clearFocus()
+            focusRequester.restoreFocusedChild()
         }
     }
+
+
     /*if (isFocused && showSuggestions) {
         DropdownMenu(
             expanded = true,
@@ -130,25 +154,47 @@ fun Searchbar(
             }
         }
     }*/
-    if (hideKeyboard) {
-        focusManager.clearFocus()
-        focusRequester.restoreFocusedChild()
-        hideKeyboard = false
-    }
+
 }
+
+    val names = listOf(
+        "Alice",
+        "Bob",
+        "Charlie",
+        "Diana",
+        "Edward",
+        "Fiona",
+        "George",
+        "Hannah",
+        "Isaac",
+        "Jasmine",
+        "Kevin",
+        "Lily",
+        "Michael",
+        "Nina",
+        "Oliver",
+        "Paula",
+        "Quincy",
+        "Rachel",
+        "Samuel",
+        "Tina"
+    )
+
+
+
+
+
 
 // demo
-@Composable
-fun PreviewDropdown ( ){
-    DropdownMenuItem(text = { Text(text = "suggestion example") }, onClick = {})
-}
-@Preview(name = "Searchbar")
-@Composable
-private fun PreviewSearchbar() {
 
-    Surface {
-        PreviewDropdown()
-    }
+@SuppressLint("UnrememberedMutableState")
+@Preview
+@Composable
+private fun Preview122() {
+    var value by mutableStateOf("")
 
+    MainScreenSearchBar(suggestions = names, onSearchClicked = {
+
+    } , modifier = Modifier)
 
 }

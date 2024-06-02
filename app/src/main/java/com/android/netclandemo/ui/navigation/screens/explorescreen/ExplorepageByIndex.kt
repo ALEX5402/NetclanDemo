@@ -7,14 +7,12 @@ import android.content.Context
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -23,7 +21,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.asFlow
 import com.android.netclandemo.R
-import com.android.netclandemo.ui.composable.Searchbar
+import com.android.netclandemo.ui.composable.MainScreenSearchBar
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnrememberedMutableState")
@@ -57,8 +54,11 @@ fun ExplorepageByIndex(
                 focusedTextColor = Color(0xFF2F6CA2)
             )
             val srarchstate by exploreViewmodel.serchvalue.asFlow<String>().collectAsState(initial = "")
-            val scope = rememberCoroutineScope()
 
+         /*   when(currentpage){
+                ScreenHolder.Profile ->
+            }
+            */
 
 
 
@@ -68,52 +68,37 @@ fun ExplorepageByIndex(
         },
         content = {
             val names = listOf(
-            "Alice",
-            "Bob",
-            "Charlie",
-            "Diana",
-            "Edward",
-            "Fiona",
-            "George",
-            "Hannah",
-            "Isaac",
-            "Jasmine",
-            "Kevin",
-            "Lily",
-            "Michael",
-            "Nina",
-            "Oliver",
-            "Paula",
-            "Quincy",
-            "Rachel",
-            "Samuel",
-            "Tina"
-        )
+                "Alice",
+                "Bob",
+                "Charlie",
+                "Diana",
+                "Edward",
+                "Fiona",
+                "George",
+                "Hannah",
+                "Isaac",
+                "Jasmine",
+                "Kevin",
+                "Lily",
+                "Michael",
+                "Nina",
+                "Oliver",
+                "Paula",
+                "Quincy",
+                "Rachel",
+                "Samuel",
+                "Tina"
+            )
+            MainScreenSearchBar(suggestions = names, onSearchClicked = {
+
+            } , modifier = Modifier.padding(
+                10.dp
+            )
+
+            )
             ConstraintLayout(modifier = Modifier
                 .fillMaxSize()
             ) {
-                val srarchstate by exploreViewmodel.serchvalue.asFlow<String>().collectAsState(initial = "")
-
-                Searchbar(suggestions = names,
-                    value = srarchstate ,
-                    onValueChange = { updatedvale->
-                        exploreViewmodel.updateindex(updatedvale)
-                    },
-                    onSearchClicked ={
-
-                    },
-                    modifier = Modifier
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 53.dp
-                        )
-                        .background(Color.Red, shape = RoundedCornerShape(30.dp) )
-                        .fillMaxWidth()
-
-                ) {
-
-                }
                 val (composable) = createRefs()
 
                 Box(
