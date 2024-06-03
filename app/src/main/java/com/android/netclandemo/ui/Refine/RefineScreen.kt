@@ -70,7 +70,13 @@ fun RefineScreen(
     onClickBack : Backclick,
     viewmodel: RefineViewmodel = hiltViewModel()
 ) {
-    Scaffold(
+    Scaffold(modifier = Modifier
+        .scrollable(
+                state = rememberScrollState(),
+        enabled = true,
+        orientation = Orientation.Vertical
+
+    ),
     topBar = {
         TopAppBar(title = {
             Text(text = "Refine",
@@ -87,7 +93,8 @@ fun RefineScreen(
                        .rotate(
                            90f
                        )
-                       .size(30.dp).clickable {
+                       .size(30.dp)
+                       .clickable {
                            onClickBack()
                        }
                )
@@ -169,12 +176,6 @@ fun RefineScreen(
                 .padding(internalPadding.apply {
                     calculateTopPadding().plus(20.dp)
                 })
-                .scrollable(
-                    state = rememberScrollState(),
-                    enabled = true,
-                    orientation = Orientation.Vertical
-
-                )
             ,
             constraintSet = createref
         ){
