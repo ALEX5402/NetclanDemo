@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+          storeFile = file("defaultkey.jks")
+            storePassword = "darktheme"
+            keyAlias = "darktheme"
+            keyPassword = "darktheme"
+        }
+    }
     namespace = "com.android.netclandemo"
     compileSdk = 34
 
@@ -25,7 +33,15 @@ android {
 
     buildTypes {
         release {
+            getByName("release") {
+                signingConfig = signingConfigs.getByName("release")
+            }
+
             isMinifyEnabled = true
+            signingConfig?.enableV1Signing
+            signingConfig?.enableV2Signing
+            signingConfig?.enableV3Signing
+            signingConfig?.enableV4Signing
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

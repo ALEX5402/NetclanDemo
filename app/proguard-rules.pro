@@ -1,21 +1,134 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.Screens { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.Screens { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.Screens { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.Screens { *; }
+
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.Screens$Explore { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.Screens$Explore { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.Screens$Explore { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.Screens$Explore { *; }
+
+
+-keep class com.android.netclandemo.ui.navigation.data.Screens$Refine { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.Screens$Refine { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.Screens$Refine { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.Screens$Refine { *; }
+
+
+# Alternatively, you can annotate classes and class members with @androidx.annotation.Keep
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.ExploreScreen { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.ExploreScreen { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.ExploreScreen { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.ExploreScreen { *; }
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.RefineScreen { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.RefineScreen { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.RefineScreen { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.RefineScreen { *; }
+
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.Screen2 { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.Screen2 { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.Screen2 { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.Screen2 { *; }
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.ExploreScreen$1 { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.ExploreScreen$1 { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.ExploreScreen$1 { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.ExploreScreen$1 { *; }
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.data.RefineScreen$1 { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.RefineScreen$1 { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.RefineScreen$1 { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.RefineScreen$1 { *; }
+
+-keep class com.android.netclandemo.ui.navigation.data.Screen2$1 { *; }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.data.Screen2$1 { *; }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.data.Screen2$1 { *; }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.data.Screen2$1 { *; }
+
+# keep the class and specified members from being removed or renamed
+-keep class com.android.netclandemo.ui.navigation.NavhostKt { void Navhost(androidx.navigation.NavHostController,kotlin.jvm.functions.Function0,androidx.compose.foundation.layout.PaddingValues,androidx.compose.runtime.Composer,int); }
+
+# keep the specified class members from being removed or renamed
+# only if the class is preserved
+-keepclassmembers class com.android.netclandemo.ui.navigation.NavhostKt { void Navhost(androidx.navigation.NavHostController,kotlin.jvm.functions.Function0,androidx.compose.foundation.layout.PaddingValues,androidx.compose.runtime.Composer,int); }
+
+# keep the class and specified members from being renamed only
+-keepnames class com.android.netclandemo.ui.navigation.NavhostKt { void Navhost(androidx.navigation.NavHostController,kotlin.jvm.functions.Function0,androidx.compose.foundation.layout.PaddingValues,androidx.compose.runtime.Composer,int); }
+
+# keep the specified class members from being renamed only
+-keepclassmembernames class com.android.netclandemo.ui.navigation.NavhostKt { void Navhost(androidx.navigation.NavHostController,kotlin.jvm.functions.Function0,androidx.compose.foundation.layout.PaddingValues,androidx.compose.runtime.Composer,int); }
+

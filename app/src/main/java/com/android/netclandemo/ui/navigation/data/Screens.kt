@@ -6,21 +6,20 @@ import androidx.compose.material.icons.sharp.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.serialization.Serializable
 
-
 sealed class Screens<T>(
     val route : T,
     val label : String,
     val icon : ImageVector
 ){
 
-    data object Home : Screens<ExploreScreen>(
+    data object Explore : Screens<ExploreScreen>(
         route = ExploreScreen,
-        label = "Refine",
+        label = "ExploreScreen",
         icon = Icons.Sharp.Home
     )
 
-    data object Home2 : Screens<Chat>(
-        route = Chat,
+    data object Refine : Screens<RefineScreen>(
+        route = RefineScreen,
         label = "Refine",
         icon = Icons.Filled.Email
     )
@@ -34,4 +33,4 @@ object  ExploreScreen
 object  RefineScreen
 
 @Serializable
-object Chat
+object Screen2

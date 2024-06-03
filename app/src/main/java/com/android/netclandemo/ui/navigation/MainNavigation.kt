@@ -36,14 +36,14 @@ fun Mainview(
             modifier = Modifier.fillMaxSize(),
 
             ) {
-            Scaffold(
+            Scaffold (
+                topBar = {
+
+                },
                 bottomBar = {
-                    Bottombar(
-                        modifier = Modifier,
-                        navController = navHostController
-                    )
+                    Bottombar(navHostController)
                 }
-            ) { paddingValues ->
+            ){ paddingValues ->
                     Navhost(navHostController,
                         drawerState = {
                             scope.launch {
@@ -53,7 +53,7 @@ fun Mainview(
                         },
                         mainpaddingValue = paddingValues
                     )
-            }
+                }
         }
     }
 }

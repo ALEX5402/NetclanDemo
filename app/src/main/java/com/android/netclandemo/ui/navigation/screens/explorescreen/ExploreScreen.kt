@@ -1,6 +1,8 @@
 package com.android.netclandemo.ui.navigation.screens.explorescreen
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,13 +25,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.android.netclandemo.ui.Refine.RefineActivity
 import com.android.netclandemo.ui.navigation.screens.data.TabItems
-import com.android.netclandemo.ui.navigation.screens.topbars.ExploreTopbar
+import com.android.netclandemo.ui.navigation.screens.explorescreen.topbars.ExploreTopbar
+import com.android.netclandemo.ui.theme.blue1
 import kotlinx.coroutines.launch
 
 
@@ -69,12 +74,17 @@ fun ExploreScreen(
 
 
     }
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             ExploreTopbar(
-                actionIconOnclick = { },
-                navigationIconOnclick = { drawerState() })
+                actionIconOnclick = {
+                 val intent = Intent(context, RefineActivity::class.java)
+                    context.startActivity(intent)
+                },
+                navigationIconOnclick = { drawerState() },
+            )
         }
     ) { innerpaddinf ->
         Scaffold(
@@ -102,11 +112,22 @@ fun ExploreScreen(
                                 }
                             },
                             text = {
+                                val darktheme = isSystemInDarkTheme()
+                                val getcoloursBasedOnTheme = if (index == pagestate.currentPage) {
+                                    if (!darktheme){
+                                        Color.Black
+                                    }else{
+                                        Color.White
+                                    }
+                                }else{
+                                    Color.Gray
+                                }
+
                                 Text(
                                     text = tabItems.title,
-                                    color = if (index == pagestate.currentPage) Color.White else Color.Gray
+                                    color = getcoloursBasedOnTheme
                                 )
-                            },
+                            }, selectedContentColor = blue1
                         )
                     }
 
@@ -114,16 +135,14 @@ fun ExploreScreen(
             }
         ) {paddingValues ->
             Box(
-                modifier = Modifier.padding(mainpaddingValue),
+                modifier = Modifier.padding(paddingValues),
             ) {
                 HorizontalPager(
                     state = pagestate,
                     modifier = Modifier
                         .fillMaxSize()
                 ) { currentpageindex->
-                    ExplorepageByIndex(
-                        currentpage = currentpageindex,
-                        tabitems = tabitems[currentpageindex].title)
+                    ExplorepageByIndex(currentpageindex)
                 }
             }
 

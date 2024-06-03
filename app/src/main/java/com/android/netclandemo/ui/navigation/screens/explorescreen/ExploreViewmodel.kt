@@ -13,19 +13,36 @@ import javax.inject.Inject
 
 class ExploreViewmodel @Inject constructor(): ViewModel()  {
     private val _getcurrentindex = MutableLiveData<String>()
-    val getcurrentindex: MutableLiveData<String> = _getcurrentindex
 
-    fun updateindex(currentindex : String){
-        _getcurrentindex.value = currentindex
-    }
-
-    private val _starchvalue  = MutableLiveData<String>()
-    val serchvalue : MutableLiveData<String>  = _starchvalue
-
-    suspend fun updatesearch(input : String?){
+    // profile
+    private val _starchvalueP  = MutableLiveData<String>()
+    val serchvalueP : MutableLiveData<String>  = _starchvalueP
+    suspend fun updatesearchP(input : String?){
         input?.let {
             viewModelScope.launch {
-                _starchvalue.value = it
+                _starchvalueP.value = it
+            }
+        }
+    }
+
+    // service
+    private val _starchvalueS  = MutableLiveData<String>()
+    val serchvalueS : MutableLiveData<String>  = _starchvalueS
+    suspend fun updatesearchS(input : String?){
+        input?.let {
+            viewModelScope.launch {
+                _starchvalueS.value = it
+            }
+        }
+    }
+
+    // business
+    private val _starchvalueB  = MutableLiveData<String>()
+    val serchvalueB : MutableLiveData<String>  = _starchvalueB
+    suspend fun updatesearchB(input : String?){
+        input?.let {
+            viewModelScope.launch {
+                _starchvalueB.value = it
             }
         }
     }

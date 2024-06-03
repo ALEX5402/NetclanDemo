@@ -1,4 +1,4 @@
-package com.android.netclandemo.ui.navigation.screens.topbars
+package com.android.netclandemo.ui.navigation.screens.explorescreen.topbars
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ExploreTopbar(
     navigationIconOnclick: () -> Unit,
-    actionIconOnclick: () -> Unit
+    actionIconOnclick: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -73,13 +73,14 @@ fun ExploreTopbar(
         Row{
             Icon(Icons.Filled.Menu,
                 contentDescription =null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier
+                    .size(40.dp)
                     .clickable(
                         onClick = {
                             navigationIconOnclick()
                         },
                         role = Role.Button
-            ))
+                    ))
         }
     }, actions = {
         Column(
@@ -92,8 +93,9 @@ fun ExploreTopbar(
         ) {
             Icon(Icons.Filled.List ,
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
-                    .align( Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .size(40.dp)
+                    .align(Alignment.CenterHorizontally)
             )
             Text(text = "Refine")
         }
@@ -103,5 +105,5 @@ fun ExploreTopbar(
 @Preview(name = "Topbar")
 @Composable
 private fun PreviewTopbar() {
-    ExploreTopbar({},{})
+    ExploreTopbar({},{},)
 }
