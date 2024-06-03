@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,7 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun Service(
     exploreViewmodel: ExploreViewmodel = hiltViewModel(),
-    context : Context = LocalContext.current
+    context : Context = LocalContext.current,
+    mainpaddingValue : PaddingValues
 ) {
     val currentstate by exploreViewmodel.serchvalueS.asFlow<String>().collectAsState(initial = "")
     val scope = rememberCoroutineScope()
@@ -52,16 +53,22 @@ fun Service(
                     "Filter is clicked",
                     Toast.LENGTH_SHORT
                 ).show()
-            }) {
-                Icon(MyIconPack.Filter, contentDescription ="Filter" )
+            }, modifier = Modifier.padding(
+                bottom = mainpaddingValue.calculateBottomPadding()
+            )
+
+            ) {
+                Icon(MyIconPack.Filter, contentDescription = "Filter")
             }
         },
         topBar = {
-            MainScreenSearchBar(onSearchClicked = {
-            }, modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp),
-                onsearchQueryListener = {updatedtext->
+            MainScreenSearchBar(
+                onSearchClicked = {
+                }, modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp
+                ),
+                onsearchQueryListener = { updatedtext ->
                     scope.launch {
                         exploreViewmodel.updatesearchS(updatedtext)
                     }
@@ -74,9 +81,10 @@ fun Service(
                 searchQuery = currentstate
             )
         },
-        content = { internalPaddingValues->
-            ConstraintLayout(modifier = Modifier
-                .fillMaxSize()
+        content = { internalPaddingValues ->
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
                 val (composable) = createRefs()
 
@@ -89,29 +97,31 @@ fun Service(
                             end.linkTo(parent.end)
                         }
                 ) {
-                    Column{
+                    Column {
                         Box(
                             modifier = Modifier
                                 .align(
                                     Alignment.CenterHorizontally
-                                )
-                            ,
+                                ),
                         ) {
                             val scale = ContentScale.Fit
 
-                            Image(MyIconPack.Haha,
-                                contentDescription =null ,
+                            Image(
+                                MyIconPack.Haha,
+                                contentDescription = null,
                                 modifier = Modifier
                                     .size(
                                         height = 200.dp,
                                         width = 180.dp
-                                    )
-                                , contentScale = scale
+                                    ), contentScale = scale
                             )
                         }
                         val context = LocalContext.current
-                        Button(onClick = { Toast.makeText(context , "You Clicked Reload" , Toast.LENGTH_LONG).show()
-                        },
+                        Button(
+                            onClick = {
+                                Toast.makeText(context, "You Clicked Reload", Toast.LENGTH_LONG)
+                                    .show()
+                            },
                             modifier = Modifier
                                 .fillParentWidth()
                                 .align(
@@ -128,10 +138,4 @@ fun Service(
 
         }
     )
-}
-
-@Preview(name = "Service")
-@Composable
-private fun PreviewService() {
-    Service()
 }

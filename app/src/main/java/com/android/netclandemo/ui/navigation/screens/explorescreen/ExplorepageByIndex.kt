@@ -4,6 +4,7 @@ package com.android.netclandemo.ui.navigation.screens.explorescreen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,18 +23,27 @@ import com.android.netclandemo.ui.navigation.screens.explorescreen.itemscreen.Se
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
-fun ExplorepageByIndex(currentpage : Int ) {
+fun ExplorepageByIndex(currentpage : Int,
+                       mainpaddingValue : PaddingValues) {
     var currentstate by remember {
         mutableStateOf(currentpage)
     }
     if (currentstate == 0){
-        Profile()
+        Profile(
+            mainpaddingValue = mainpaddingValue
+        )
     }else if (currentstate == 1){
-        Service()
+        Service(
+            mainpaddingValue = mainpaddingValue
+        )
     }else if (currentstate== 2){
-        Businesses()
+        Businesses(
+            mainpaddingValue = mainpaddingValue
+        )
     }else{
-        Profile()
+        Profile(
+            mainpaddingValue = mainpaddingValue
+        )
     }
 
 
@@ -56,6 +66,6 @@ fun Modifier.fillParentWidth(): Modifier{
 private fun PreviewExplorepageByIndex() {
     ExplorepageByIndex(
         0,
-
+        PaddingValues(2.dp)
     )
 }

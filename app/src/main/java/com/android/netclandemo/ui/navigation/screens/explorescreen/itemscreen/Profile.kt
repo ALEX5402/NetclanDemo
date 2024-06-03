@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,15 +38,23 @@ import kotlinx.coroutines.launch
 @Composable
 fun Profile(
     exploreViewmodel: ExploreViewmodel = hiltViewModel(),
-    context : Context = LocalContext.current
+    context : Context = LocalContext.current,
+    mainpaddingValue : PaddingValues
 ) {
     val currentstate by exploreViewmodel.serchvalueP.asFlow<String>().collectAsState(initial = "")
     val scope = rememberCoroutineScope()
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-
-            }) {
+                Toast.makeText(
+                    context,
+                    "Filter is clicked",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },  modifier = Modifier.padding(
+                bottom = mainpaddingValue.calculateBottomPadding()
+            )
+            ) {
                 Icon(MyIconPack.Filter, contentDescription ="Filter" )
             }
         },
@@ -122,10 +130,4 @@ fun Profile(
 
         }
     )
-}
-
-@Preview(name = "Profile")
-@Composable
-private fun PreviewProfile() {
-    Profile()
 }

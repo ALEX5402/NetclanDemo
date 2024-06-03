@@ -142,7 +142,7 @@ fun ExploreScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 ) { currentpageindex->
-                    ExplorepageByIndex(currentpageindex)
+                    ExplorepageByIndex(currentpageindex,mainpaddingValue)
                 }
             }
 
